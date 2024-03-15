@@ -12,7 +12,7 @@ from typing import List, Union, Tuple
 import qrcode
 from reportlab.lib.units import toLength
 from reportlab.pdfgen.canvas import FILL_EVEN_ODD, Canvas
-
+from reportlab.lib.colors import CMYKColor
 
 DEFAULT_PARAMS = {
 	'version': None,
@@ -238,8 +238,7 @@ class ReportlabImageBase(qrcode.image.base.BaseImage):
 
 				if not self.mask:
 					# Set foreground
-					stream.setFillColor(self.fg)
-					stream.setFillAlpha(self.fg_alpha)
+					stream.setFillColor(CMYKColor(0,0,0,1))
 
 				p = stream.beginPath()
 				if self.negative:
@@ -271,8 +270,7 @@ class ReportlabImageBase(qrcode.image.base.BaseImage):
 		Draw rectangle on background if is not transparent
 		"""
 		if self.bg is not None:
-			stream.setFillColor(self.bg)
-			stream.setFillAlpha(self.bg_alpha)
+			stream.setFillColor(CMYKColor(0,0,0,0))
 			stream.rect(0, 0, self.size, self.size, fill=1, stroke=0)
 
 	def draw_code(self, path):
