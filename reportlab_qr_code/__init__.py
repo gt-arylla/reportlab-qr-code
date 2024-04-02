@@ -177,6 +177,10 @@ class ReportlabImageBase(qrcode.image.base.BaseImage):
 	draw_parts = None
 	draw_state_stack = []
 
+	# self.size = total size of code (including quiet zone)
+	# self.width = count of modules in code (Example, Version2 is 25)
+	# self.padding = padding between edge of quiet zone and start of visible code
+
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
 		self.bitmap = array.array('B', [1 if self.invert else 0] * self.width * self.width)
@@ -185,7 +189,7 @@ class ReportlabImageBase(qrcode.image.base.BaseImage):
 		else:
 			try:
 				self.padding = float(self.padding)
-				self.padding = (self.size / (self.width + self.padding * 2)) * self.padding
+				#self.padding = (self.size / (self.width + self.padding * 2)) * self.padding
 			except ValueError:
 				self.padding = toLength(self.padding) if isinstance(self.padding, str) else float(self.padding)
 		if self.enhanced_path is None:
