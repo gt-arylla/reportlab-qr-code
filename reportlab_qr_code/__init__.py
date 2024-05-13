@@ -13,6 +13,7 @@ import qrcode
 from reportlab.lib.units import toLength
 from reportlab.pdfgen.canvas import FILL_EVEN_ODD, Canvas
 from reportlab.lib.colors import CMYKColor
+from reportlab.lib.colors import CMYKColorSep
 
 DEFAULT_PARAMS = {
 	'version': None,
@@ -243,6 +244,15 @@ class ReportlabImageBase(qrcode.image.base.BaseImage):
 				if not self.mask:
 					# Set foreground
 					stream.setFillColor(CMYKColor(0,0,0,1))
+					# stream.setFillColor(CMYKColor(0.6,0.4,0.4,1))
+					# stream.setFillColor(CMYKColorSep(
+                    #     0.1528,
+                    #     0.1044,
+                    #     0.1283,
+                    #     0,
+                    #     spotName="PANTONE Cool Gray 1 C",
+                    #     density=1
+                    # ))
 
 				p = stream.beginPath()
 				if self.negative:
