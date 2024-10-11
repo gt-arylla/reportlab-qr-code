@@ -18,6 +18,8 @@ from reportlab.lib.colors import CMYKColorSep
 DEFAULT_PARAMS = {
 	'version': None,
 	'error_correction': 'L',
+	'x_rotation': 0,
+	'y_rotation': 0
 }
 FALSE_VALUES = {'off', 'false', 'False', '0', False, 0, None}
 QR_PARAMS = {'version', 'error_correction'}
@@ -157,6 +159,9 @@ class ReportlabImageBase(qrcode.image.base.BaseImage):
 		'radius': Transforms.to_float,
 		'enhanced_path': Transforms.to_bool,
 		'hole': Transforms.to_area,
+		'x_rotation': None,
+		'y_rotation': None,
+		'rotation': None,
 	}
 	DRAW_STATE_PROPERTIES = ['bitmap', 'fg', 'fg_alpha', 'enhanced_path', 'hole', 'radius']
 
@@ -707,7 +712,15 @@ def qr_draw(canvas, text, **kwargs):
 	clean_params(params)
 	if isinstance(text, str):
 		text = text.encode('utf-8')
+	if "rotation" in params and not params["rotation"]==0:
+		canvas.translate(params["x_rotation"], params["y_rotation"])
+		canvas.rotate(params["rotation"])
+		canvas.translate(-params["x_rotation"], -params["y_rotation"])
 	build_qrcode(params, text).save(canvas)
+	if "rotation" in params and not params["rotation"]==0:
+		canvas.translate(params["x_rotation"], params["y_rotation"])
+		canvas.rotate(-params["rotation"])
+		canvas.translate(-params["x_rotation"], -params["y_rotation"])
 
 
 def qr(canvas, params=None):
